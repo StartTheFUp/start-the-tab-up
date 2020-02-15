@@ -1,0 +1,20 @@
+{ 
+	"manifest_version": 2, 
+
+	"name": "Start The Fup", 
+	"description": "A simple chrome extension showing a clock and lightning picks, and a button to call the Start The Fup Team", 
+	"version": "1", 
+	"author": "David Baruchel",
+
+	"browser_action": {   
+		"default_icon": "stfu-icon-round-small.png",   
+		"default_title": "Start The Fup" 
+	},
+
+	"chrome_url_overrides" : {  "newtab": "newtab.html"},
+
+	"permissions": [
+		"activeTab"
+	]
+
+}
