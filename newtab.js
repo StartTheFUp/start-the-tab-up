@@ -3,6 +3,56 @@ document.addEventListener('DOMContentLoaded', function() {
 	// chrome.browserAction.setBadgeText({text: '1'});
 
 	// chrome.browserAction.setBadgeBackgroundColor({color: '#F00'});
+	
+
+	function loadImageSrc(img, src) {
+		img.onload = function() {
+			this.refs.image.src = src
+		}
+
+		img.src=src
+		saveNextImage();
+	}
+
+	fetchUnsplashImage = (cb) => {
+    let url = "https://source.unsplash.com/collection/9538144";
+		let w = "&w=1100";
+		// let w = `&w=${window.innerWidth}`;
+		let h = "&h=750";
+		// let h = `&h=${window.innerHeight}`;
+
+		return fetch(url + w + h)
+			.then(function(res) {
+				return res.json()
+			})
+			.then(cb);
+	};
+	
+	function saveNextImage () {
+    return fetchUnsplashImage(function(imgJson) {
+			localStorage.setItem("savedBackground", JSON.stringify(imgJson));
+			
+			fetch(imgJson.urls.custom).then(function(res) {
+				res => console.log(res)
+			});
+		});
+  };
+
+	function fetchSrc(cb) {
+		let savedBackground = JSON.parse(localStorage.getItem("savedBackground"));
+    if (savedBackground) return cb(savedBackground.urls.custom);
+
+    return fetchUnsplashImage(function (image) {
+			cb(image.urls.custom)
+		})
+	}
+
+	// Execution of savin
+	let img = new Image();
+
+	fetchSrc(function(src) {
+		loadImageSrc(img, src)
+	})
 
 	function startTime() {
 		var today=new Date();
@@ -44,6 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		// 	q.parentNode.insertBefore(js,q) 
 		// } 
 	}
+
+
 
 	startTime();
 
