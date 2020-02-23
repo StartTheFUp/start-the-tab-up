@@ -5,54 +5,53 @@ document.addEventListener('DOMContentLoaded', function() {
 	// chrome.browserAction.setBadgeBackgroundColor({color: '#F00'});
 	
 
-	function loadImageSrc(img, src) {
-		img.onload = function() {
-			this.refs.image.src = src
-		}
 
-		img.src=src
-		saveNextImage();
-	}
-
-	fetchUnsplashImage = (cb) => {
-    let url = "https://source.unsplash.com/collection/9538144";
+	function fetchUnsplashImage(cb) {
+    	let url = "https://source.unsplash.com/collection/9538144";
 		let w = "&w=1100";
 		// let w = `&w=${window.innerWidth}`;
 		let h = "&h=750";
 		// let h = `&h=${window.innerHeight}`;
 
-		return fetch(url + w + h)
+		fetch(url + w + h)
 			.then(function(res) {
-				return res.json()
+				return res;
 			})
 			.then(cb);
 	};
-	
-	function saveNextImage () {
-    return fetchUnsplashImage(function(imgJson) {
+
+
+	// Cette fonction appelle fetchUnsplashImage() et envoie le résultat dans le localStorage + l'affiche dans la console
+	function saveNextImage() {
+		return fetchUnsplashImage(function(imgJson) {
 			localStorage.setItem("savedBackground", JSON.stringify(imgJson));
 			
-			fetch(imgJson.urls.custom).then(function(res) {
-				res => console.log(res)
+			fetch(imgJson.url).then(function(res) {
+				return console.log(res);
 			});
 		});
-  };
+  	};
 
+	// Cette fonction appelle l'image présente dans le localStorage s'il y en a une, et appelle fetchUnsplashImage() sinon
 	function fetchSrc(cb) {
-		let savedBackground = JSON.parse(localStorage.getItem("savedBackground"));
-    if (savedBackground) return cb(savedBackground.urls.custom);
-
-    return fetchUnsplashImage(function (image) {
-			cb(image.urls.custom)
-		})
+		var savedBackground = JSON.parse(localStorage.getItem("savedBackground"));
+    	if (savedBackground[0]) {
+    		return savedBackground.url;
+    	} else {
+	    	fetchUnsplashImage(function(image) {
+				cb(image.url);
+			});
+    	}
 	}
 
-	// Execution of savin
-	let img = new Image();
-
 	fetchSrc(function(src) {
-		loadImageSrc(img, src)
-	})
+		var img = document.getElementById("bg-img");
+		img.src = src;
+		saveNextImage();
+	});
+
+
+	///////////////////////////////////////////////////////////
 
 	function startTime() {
 		var today=new Date();
@@ -95,8 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		// } 
 	}
 
-
-
 	startTime();
 
 	var tfPopupBtn = document.getElementById('tf-popup-btn');
@@ -104,6 +101,11 @@ document.addEventListener('DOMContentLoaded', function() {
     tfPopupBtn.addEventListener('click', function() {
         typeformPopup();
     });
+
+
+
+
+    //////////////////////////////////
 
 	// // Add event listener
 	// document.addEventListener("mousemove", parallax);
