@@ -3,6 +3,55 @@ document.addEventListener('DOMContentLoaded', function() {
 	// chrome.browserAction.setBadgeText({text: '1'});
 
 	// chrome.browserAction.setBadgeBackgroundColor({color: '#F00'});
+	
+
+
+	function fetchUnsplashImage(cb) {
+    	let url = "https://source.unsplash.com/collection/9538144";
+		let w = "&w=1100";
+		// let w = `&w=${window.innerWidth}`;
+		let h = "&h=750";
+		// let h = `&h=${window.innerHeight}`;
+
+		fetch(url + w + h)
+			.then(function(res) {
+				return res;
+			})
+			.then(cb);
+	};
+
+
+	// Cette fonction appelle fetchUnsplashImage() et envoie le résultat dans le localStorage + l'affiche dans la console
+	function saveNextImage() {
+		return fetchUnsplashImage(function(imgJson) {
+			localStorage.setItem("savedBackground", JSON.stringify(imgJson));
+			
+			fetch(imgJson.url).then(function(res) {
+				return console.log(res);
+			});
+		});
+  	};
+
+	// Cette fonction appelle l'image présente dans le localStorage s'il y en a une, et appelle fetchUnsplashImage() sinon
+	function fetchSrc(cb) {
+		var savedBackground = JSON.parse(localStorage.getItem("savedBackground"));
+    	if (savedBackground[0]) {
+    		return savedBackground.url;
+    	} else {
+	    	fetchUnsplashImage(function(image) {
+				cb(image.url);
+			});
+    	}
+	}
+
+	fetchSrc(function(src) {
+		var img = document.getElementById("bg-img");
+		img.src = src;
+		saveNextImage();
+	});
+
+
+	///////////////////////////////////////////////////////////
 
 	function startTime() {
 		var today=new Date();
@@ -52,6 +101,11 @@ document.addEventListener('DOMContentLoaded', function() {
     tfPopupBtn.addEventListener('click', function() {
         typeformPopup();
     });
+
+
+
+
+    //////////////////////////////////
 
 	// // Add event listener
 	// document.addEventListener("mousemove", parallax);
