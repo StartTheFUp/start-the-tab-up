@@ -23,11 +23,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Cette fonction appelle fetchUnsplashImage() et envoie le résultat dans le localStorage + l'affiche dans la console
 	function saveNextImage() {
-		return fetchUnsplashImage(function(imgJson) {
+		fetchUnsplashImage(function(imgJson) {
+			console.log(imgJson);
+			console.log(imgJson.url);
+			console.log(JSON.stringify(imgJson));
+
 			localStorage.setItem("savedBackground", JSON.stringify(imgJson));
+			console.log(localStorage.getItem("savedBackground"));
+
+			// // Tentative avec chrome.storage
+			// chrome.storage.local.set({'savedBackground': imgJson});
+			// console.log(chrome.storage.local.get('savedBackground'));
+
+			// Tentative sans Json.parse
+			// // localStorage.setItem("savedBackgroundUrl", imgJson.url);
 			
 			fetch(imgJson.url).then(function(res) {
-				return console.log(res);
+				console.log(res);
 			});
 		});
   	};
@@ -35,20 +47,48 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Cette fonction appelle l'image présente dans le localStorage s'il y en a une, et appelle fetchUnsplashImage() sinon
 	function fetchSrc(cb) {
 		var savedBackground = JSON.parse(localStorage.getItem("savedBackground"));
-    	if (savedBackground[0]) {
+		console.log(savedBackground);
+    	if (savedBackground) {
     		return savedBackground.url;
     	} else {
 	    	fetchUnsplashImage(function(image) {
 				cb(image.url);
 			});
     	}
+    	// // Tentative avec storage.local
+		// chrome.storage.local.get('savedBackground', function(data) {
+		// 	var savedBackground = data;
+		// 	console.log(savedBackground);
+	 //    	if (savedBackground) {
+	 //    		return savedBackground.url;
+	 //    	} else {
+		//     	fetchUnsplashImage(function(image) {
+		// 			cb(image.url);
+		// 		});
+	 //    	}
+		// });
+
+    	// // Tentative sans Json.parse
+		// var savedBackgroundUrl = localStorage.getItem("savedBackgroundUrl");
+		// console.log(savedBackgroundUrl);
+  //   	if (savedBackgroundUrl) {
+  //   		return savedBackgroundUrl;
+  //   	} else {
+	 //    	fetchUnsplashImage(function(image) {
+		// 		cb(image.url);
+		// 	});
+  //   	}
+  //   	fetchUnsplashImage(function(image) {
+		// 	cb(image.url);
+		// });
 	}
 
-	fetchSrc(function(src) {
-		var img = document.getElementById("bg-img");
-		img.src = src;
-		saveNextImage();
-	});
+	// fetchSrc(function(src) {
+	// 	// debugger;
+	// 	var img = document.getElementById("bg-img");
+	// 	img.src = src;
+	// 	saveNextImage();
+	// });
 
 
 	///////////////////////////////////////////////////////////

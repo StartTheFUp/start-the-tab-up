@@ -16,6 +16,7 @@
 
 	"permissions": [
 		"activeTab",
+		"storage",
 		"https://*.twitter.com/",
 		"https://*.twimg.com/"
 	]
