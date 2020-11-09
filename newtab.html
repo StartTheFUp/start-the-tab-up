@@ -4,8 +4,12 @@
 		<title>Start The Tab Up</title>
 		<script src="/newtab.js"></script>
 		<script src="/embed.js"></script>
+		<script src="/jquery.js"></script>
 <!-- 		<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
- -->	</head>  	
+ -->	
+		<meta name="twitter:widgets:csp" content="on">
+
+	</head>  	
 
 	<body style="background-color: black;">
 		<div id="bg-img-cont" style="
@@ -74,12 +78,64 @@
 			</a> 
 		</div>
 
-		<div id="stfu-logo" style="position:absolute; bottom:2rem; right:2rem">
+		<div id="stfu-logo" style="position:absolute; bottom:2rem; left:2rem">
 			<a href="http://www.startthefup.co" style="cursor:pointer">
 				<img src="stfu-long-no-bg.png" style="height: 20px">
 			</a>
 		</div>
 
+		<div class="drawer-closed" id="outer-tw-wrapper" style="
+			width:430px; 
+			height:100vh;
+			position: absolute;
+			top:0;
+			right:0;
+			transition: ease-in-out 0.5s;
+			opacity:0.9;
+			">
+			<div id="drawer-arrow" style="
+				width:30px;
+				height:200px;
+				line-height: 200px;
+				text-align: center;
+				background-color:#293033;
+				color:white;
+				position: absolute;
+				left:0px;
+				top:calc(50vh - 100px);
+				border-radius: 30px 0 0 30px; 
+				"> 
+				<img src="chevron-white.png" style="width: 10px">
+				
+			</div>
+
+			<div id="tw-wrapper" style="
+				width:400px; 
+				height:100vh;
+				overflow: scroll;
+				position: absolute;
+				top:0;
+				right:0;
+				transition: ease-in-out 0.5s;
+				">
+
+
+				<a class="twitter-timeline" data-dnt="true" data-theme="dark" href="https://twitter.com/startthefup"></a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+			</div>
+
+		<style>
+			#drawer-arrow:hover {
+				background-color:#1f2529 !important;
+				cursor: pointer;
+			}
+			.drawer-closed {
+				transform: translateX(350px);
+			}
+			.drawer-closed #drawer-arrow img {
+				transform: rotate(180deg);
+			}
+			
+		</style>
 
 	</body>
 </html>

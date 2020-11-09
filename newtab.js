@@ -3,9 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	// chrome.browserAction.setBadgeText({text: '1'});
 
 	// chrome.browserAction.setBadgeBackgroundColor({color: '#F00'});
+
 	
-
-
 	function fetchUnsplashImage(cb) {
     	let url = "https://source.unsplash.com/collection/9538144";
 		let w = "&w=1100";
@@ -19,6 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.then(cb);
 	};
+
+	$('#drawer-arrow').click(function() {
+		$('#outer-tw-wrapper').toggleClass('drawer-closed');
+	});
 
 
 	// Cette fonction appelle fetchUnsplashImage() et envoie le résultat dans le localStorage + l'affiche dans la console
@@ -141,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
     tfPopupBtn.addEventListener('click', function() {
         typeformPopup();
     });
-
 
 
 
